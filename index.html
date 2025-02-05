@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Веб-калькулятор</title>
     <link href="style.css" rel="stylesheet">
-    <link href="" rel="icon" type="image/x-icon"> <!-- Вставить favicon -->
+    <link href="img\favicon.png" rel="icon" type="image/x-icon">
     <script src="script.js"></script>
     <script src="https://kit.fontawesome.com/eccdc529c9.js" crossorigin="anonymous"></script>
 </head>
@@ -17,7 +17,7 @@
     <header>
         <div class="logo">
             <a href="#">
-                <img src="" alt="Логотип"> <!-- Вставить изображение логотипа -->
+                <img src="img\logo.png" alt="Логотип">
             </a>
         </div>
         <nav class="nav">
@@ -27,34 +27,34 @@
         </nav>
     </header>
     <main>
-        <h1>Высчитай меня полностью!</h1>
+        <h1>TRY ME</h1>
         <div class="calculator">
             <div class="result">
                 <h3 id="display">0</h3>
             </div>
             <div class="buttons">
-                <button>C</button>
-                <button>(</button>
-                <button>)</button>
-                <button>%</button>
-                <button>/</button>
+                <button id="special">C</button>
+                <button id="special">(</button>
+                <button id="special">)</button>
+                <button id="special">%</button>
+                <button id="special">/</button>
                 <button>7</button>
                 <button>8</button>
                 <button>9</button>
-                <button>x</button>
+                <button id="special">x</button>
                 <button>4</button>
                 <button>5</button>
                 <button>6</button>
-                <button>-</button>
+                <button id="special">-</button>
                 <button>1</button>
                 <button>2</button>
                 <button>3</button>
-                <button>+</button>
-                <button>+/-</button>
+                <button id="special">+</button>
+                <button id="special">+/-</button>
                 <button>0</button>
-                <button>.</button>
-                <button>^</button>
-                <button>=</button>
+                <button id="special">.</button>
+                <button id="special">^</button>
+                <button id="ultra">=</button>
             </div>
         </div>
     </main>

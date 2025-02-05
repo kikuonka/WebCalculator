@@ -1,0 +1,141 @@
+/*
+    TO-DO: Создание оформления для основных элементов HTML.
+    Требования: Реализация позиционирования с помощью CSS Grid.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Nunito Sans", serif;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100vh;
+    background: linear-gradient(#000000, #120526, #6814A4, #ffffff);
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #ffffff;
+}
+
+header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 0 30px;
+    border-bottom: 2px solid;
+    box-shadow: 0 0 10px rgb(255, 255, 255);
+}
+
+.logo img {
+    height: 10vh;
+}
+
+.nav {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 20px;
+}
+
+.nav a {
+    font-size: 32px;
+    color: #ffffff;
+}
+
+main {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    place-items: center;
+    text-align: center;
+}
+
+h1 {
+    padding: 30px;
+    font-size: 32px;
+}
+
+.calculator {
+    font-family: "Roboto Mono", serif;
+    background-color: #000000;
+    border: 1px solid;
+    border-color: #ffffff;
+    box-shadow: 10px 0 0 rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 20px;
+    height: 60vh;
+    width: 60vw;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 20px;
+}
+
+.result {
+    height: 10vh;
+    border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 10px 0 0 rgb(255, 255, 255);
+    padding: 10px;
+    text-align: right;
+}
+
+.result h3 {
+    font-size: 52px;
+    align-items: center;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.buttons button {
+    height: 5vh;
+    width: 10vw;
+    background-color: #ffffff;
+    border-radius: 10px;
+    font-size: 28px;
+    font-family: "Roboto Mono", serif;
+    cursor: pointer;
+}
+
+.buttons button[id="special"] {
+    background-color: #FBD45A;
+}
+
+.buttons button[id="ultra"] {
+    background-color: #C74AC4;
+    width: vw;
+}
+
+footer {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: auto auto;
+    border-top: 2px solid;
+    box-shadow: 0 0 10px rgb(255, 255, 255);
+}
+
+.left-part p {
+    color: #000000;
+    font-weight: bold;
+    text-align: left;
+}
+
+.left-part a {
+    color: #845CA4;
+    text-decoration: overline;
+    cursor: pointer;
+    text-align: right;
+}
+
+.right-part h3 {
+    color: #845CA4;
+    text-decoration: overline;
+    cursor: pointer;
+    text-align: right;
+}
