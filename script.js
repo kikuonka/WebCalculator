@@ -68,20 +68,31 @@ function math(oper) {
 }
 
 /*
-    TO-DO: Реализация функционала для расчета результата.
-    Требования: ---
+    TO-DO:      Реализация функционала для расчета результата.
+    Требования: Внедрение возможности сохранения последних введенных данных в localstorage,
+                чтобы после обновления страницы сохранялось введенные пользователем значения,
+                которые еще не были вычислены.
 */
 
-let temp = "";
+let temp = localStorage. getItem("calculate_element") || "";
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("display").innerText = temp || "0";
+})
+
+function saveLocalStorage() {
+    localStorage.setItem("calculate_element", temp);
+}
 
 function calculate() {
     try {
         let result = math(temp);
         document.getElementById("display").innerText = result;
         temp = result.toString();
+        saveLocalStorage();
     } catch {
         document.getElementById("display").innerText = "Ошибка";
         temp = "";
+        localStorage.removeItem("calculate_element");
     }
 }
 
@@ -93,6 +104,7 @@ function calculate() {
 function clearAll() {
     temp = "";
     document.getElementById("display").innerText = "0";
+    localStorage.removeItem("calculate_element");
 }
 
 /*
@@ -105,4 +117,24 @@ function clearOne() {
 
     temp = temp.slice(0, -1);
     document.getElementById("display").innerText = temp || 0;
+    saveLocalStorage();
+}
+
+/*
+    ВАЖНО! Калькулятор не работал, потому что функция была названа click()
+    В JS и без этого хватает встроенных событий с таким наименованием
+*/
+
+function pressTo(button) {
+    if (button === 'C') {
+        clearAll();
+    } else if (button === 'DEL') { 
+        clearOne();
+    } else if (button === '=') {
+        calculate();
+    } else {
+        temp += button;
+        document.getElementById("display").innerText = temp;
+        saveLocalStorage();
+    }
 }
