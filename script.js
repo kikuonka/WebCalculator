@@ -18,17 +18,21 @@ function math(oper) {
         [] - перечисление допустимых операторов
         __________________________________________
     */
-    let tokens = oper.match(/(\d+\.?\d*|[-+*/^()])/g);
+    let tokens = oper.match(/(\d+\.?\d*|[-+*/^()])|(-?\d+\.?\d*)/g);
     if (!tokens) return "Ошибка";
 
     let OPNQueue = [];
     let operators = [];
     let priority = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3};
 
-    for (let token of tokens) {
+    for (let i = 0; i < tokens.length; i++) {
+        let token = tokens[i];
         if (!isNaN(token)) {
             OPNQueue.push(parseFloat(token));
         } else if (token in priority) {
+            if (token === '-' && (i === 0 || tokens[i - 1] === '(')) {
+                OPNQueue.push(0);
+            }
             while (operators.length && priority[operators[operators.length - 1]] >= priority[token]) {
                 OPNQueue.push(operators.pop());
             }
@@ -52,19 +56,24 @@ function math(oper) {
         if (!isNaN(token)) {
             stack.push(token);
         } else {
-            let num1 = stack.pop();
             let num2 = stack.pop();
+            let num1 = stack.pop();
+            if (num1 === undefined || num2 === undefined) return "Ошибка";
             switch (token) {
                 case '+': stack.push(num1 + num2); break;
                 case '-': stack.push(num1 - num2); break;
                 case '*': stack.push(num1 * num2); break;
-                case '/': stack.push(num1 / num2); break;
+                case '/': 
+                    if (num2 === 0) {
+                        return "Ошибка";
+                    }
+                    stack.push(num1 / num2); break;
                 case '^': stack.push(Math.pow(num1, num2)); break;
             }
         }
     }
 
-    return stack[0];
+    return stack.length ? stack[0] : "Ошибка";
 }
 
 /*
@@ -74,7 +83,7 @@ function math(oper) {
                 которые еще не были вычислены.
 */
 
-let temp = localStorage. getItem("calculate_element") || "";
+let temp = localStorage.getItem("calculate_element") || "";
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("display").innerText = temp || "0";
 })
@@ -84,11 +93,24 @@ function saveLocalStorage() {
 }
 
 function calculate() {
+    if (temp === "" || isNaN(parseFloat(temp))) {
+        document.getElementById("display").innerText = "Ошибка";
+        temp = "";
+        localStorage.removeItem("calculate_element");
+        return;
+    }
+    
     try {
         let result = math(temp);
-        document.getElementById("display").innerText = result;
-        temp = result.toString();
-        saveLocalStorage();
+        if (result === "Ошибка") {
+            document.getElementById("display").innerText = "Ошибка";
+            temp = "";
+            localStorage.removeItem("calculate_element");
+        } else {
+            document.getElementById("display").innerText = result;
+            temp = result.toString();
+            saveLocalStorage();
+        }
     } catch {
         document.getElementById("display").innerText = "Ошибка";
         temp = "";
@@ -97,7 +119,7 @@ function calculate() {
 }
 
 /*
-    TO-DO: Реализация возможности полностью очистить все введенные данные.
+    TO-DO:      Реализация возможности полностью очистить все введенные данные.
     Требования: ---
 */
 
@@ -108,7 +130,7 @@ function clearAll() {
 }
 
 /*
-    TO-DO: Реализация удаления последних введенных операторов и операндов.
+    TO-DO:      Реализация удаления последних введенных операторов и операндов.
     Требования: ---
 */
 
@@ -130,6 +152,28 @@ function pressTo(button) {
         clearAll();
     } else if (button === 'DEL') { 
         clearOne();
+    } else if (button === '%') {
+        if (temp === "" || isNaN(parseFloat(temp))) {
+            document.getElementById("display").innerText = "Ошибка";
+            temp = "";
+            localStorage.removeItem("calculate_element");
+        } else {
+            temp = (parseFloat(temp) / 100).toString();
+            document.getElementById("display").innerText = temp;
+            saveLocalStorage();
+        }
+    } else if (button === '+/-') {
+        if (temp === "" || isNaN(parseFloat(temp))) {
+            return;
+        }
+        let match = temp.match(/-?\d+\.?\d*$/); // Найти последнее число
+        if (match) {
+            let number = parseFloat(match[0]);
+            let inverted = (-number).toString();
+            temp = temp.slice(0, -match[0].length) + inverted;
+            document.getElementById("display").innerText = temp;
+            saveLocalStorage();
+        }
     } else if (button === '=') {
         calculate();
     } else {
@@ -138,5 +182,3 @@ function pressTo(button) {
         saveLocalStorage();
     }
 }
-
-document.getElementById("year").textContent = new Date().getFullYear();

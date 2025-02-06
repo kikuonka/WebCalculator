@@ -74,6 +74,7 @@
                 <button onclick="pressTo('0')">0</button>
                 <button onclick="pressTo('.')" id="special">.</button>
                 <button onclick="pressTo('^')" id="special">^</button>
+                <button onclick="pressTo('+/-')" id="special">+/-</button>
                 <button onclick="pressTo('=')" id="ultra">=</button>
             </div>
         </div>
@@ -83,7 +84,10 @@
             <!--Корректировка
                 TO-DO: Добавить автоматическое определение текущего года.
             -->
-            <p>&copy <span id="year"></span><br>Разработано Ефремовой Полиной Александровной</p>
+            <p>&copy; <span id="year"></span><br>Разработано Ефремовой Полиной Александровной</p>
+            <script>
+                document.getElementById("year").textContent = new Date().getFullYear();
+            </script>
             <!--Корректировка
                 TO-DO: Для ссылочных элементов добавить анимацию при наведении (спуск линии, смена цвета).
             -->
