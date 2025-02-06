@@ -138,3 +138,5 @@ function pressTo(button) {
         saveLocalStorage();
     }
 }
+
+document.getElementById("year").textContent = new Date().getFullYear();
