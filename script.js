@@ -84,3 +84,25 @@ function calculate() {
         temp = "";
     }
 }
+
+/*
+    TO-DO: Реализация возможности полностью очистить все введенные данные.
+    Требования: ---
+*/
+
+function clearAll() {
+    temp = "";
+    document.getElementById("display").innerText = "0";
+}
+
+/*
+    TO-DO: Реализация удаления последних введенных операторов и операндов.
+    Требования: ---
+*/
+
+function clearOne() {
+    if (temp.length === 0) return;
+
+    temp = temp.slice(0, -1);
+    document.getElementById("display").innerText = temp || 0;
+}
