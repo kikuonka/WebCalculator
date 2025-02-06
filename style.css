@@ -1,4 +1,4 @@
-/*
+/*  Основа
     TO-DO: Создание оформления для основных элементов HTML.
     Требования: Реализация позиционирования с помощью CSS Grid.
 */
@@ -20,6 +20,11 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     color: #ffffff;
+    
+    /*  
+        P.S. Больше не стоит ничего использовать,
+        сетка перешла в main.
+    */
 }
 
 header {
@@ -39,11 +44,51 @@ header {
     display: grid;
     grid-template-columns: auto auto auto;
     gap: 20px;
+    align-items: center;
+    text-align: center;
 }
 
 .nav a {
+    align-items: center;
+    text-align: center;
+}
+
+.nav a i {
+    position: relative;
     font-size: 32px;
     color: #ffffff;
+    transition: color 0.5s;
+
+    /*
+        P.S. Неоновое свечение отменяется,
+        значок ВК все ломает. 
+        !!! ОН В ПРИНЦИПЕ ВСЕ ЛОМАЕТ, ПОЧЕМУ ОНИ ВООБЩЕ ПЛАТНЫЕ - МНЕ НУЖЕН БЫЛ КРУГЛЫЙ
+    */
+}
+
+.nav a i::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 110%; /* Это было хорошо */
+    height: 0;
+    background: #FBD45A;
+    transition: height 0.5s ease-in-out;
+    z-index: -1;
+    border-radius: 100%;
+}
+
+.nav a:nth-child(3) i::after {
+    border-radius: 20%;
+}
+
+.nav a:hover i::after {
+    height: 100%;
+}
+
+.nav a:hover i {
+    color: #000000;
 }
 
 main {
@@ -51,6 +96,11 @@ main {
     grid-template-rows: auto 1fr;
     place-items: center;
     text-align: center;
+
+    /* Неоновая сетка */
+    background: linear-gradient(#C74AC4, transparent 1px), linear-gradient(90deg, #C74AC4, transparent 1px);
+    background-size: 125px 125px;
+    background-position: center center;
 }
 
 h1 {

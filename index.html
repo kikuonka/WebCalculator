@@ -1,7 +1,8 @@
-<!--
+<!--Основа
     TO-DO: Создание основной структуры HTML для веб-калькулятора.
     Требования: Грамотное использование атрибутов и тегов.
 -->
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -13,6 +14,9 @@
     <script src="script.js"></script>
     <script src="https://kit.fontawesome.com/eccdc529c9.js" crossorigin="anonymous"></script>
 </head>
+<!--Корректировка
+    TO-DO: Добавить на фон неоновую сетку (только Бог простит).
+-->
 <body>
     <header>
         <div class="logo">
@@ -20,19 +24,33 @@
                 <img src="img\logo.png" alt="Логотип">
             </a>
         </div>
+        <!--Корректировка
+            TO-DO: Создать неоновое свечение для ссылочных объектов.
+            TO-DO: Добавить анимацию при наведении курсора (смена цвета, горизонтально).
+        -->
         <nav class="nav">
-            <a href=""><i class="fa-brands fa-github"></i></a> <!-- Вставить ссылку на гит-репозиторий -->
-            <a href=""><i class="fa-brands fa-telegram"></i></a> <!-- Вставить ссылку на телеграмм -->
-            <a href=""><i class="fa-brands fa-vk"></i></a> <!-- Вставить ссылку на страницу ВК -->
+            <a href="https://github.com/kikuonka/WebCalculator"><i class="fa-brands fa-github"></i></a>
+            <a href="https://t.me/POLink_ing"><i class="fa-brands fa-telegram"></i></a>
+            <a href="https://vk.com/gremln"><i class="fa-brands fa-vk"></i></a>
         </nav>
     </header>
     <main>
+        <!--Корректировка
+            TO-DO: Оформить заголовок как бегущую строку.
+        -->
         <h1>TRY ME</h1>
+        <!--Корректировка
+            TO-DO: Добавить адаптацию для мобильных устройств и ограничения на десктопы.
+            (Использование vw/vh - сомнительной была затея)
+        -->
         <div class="calculator">
             <div class="result">
                 <h3 id="display">0</h3>
             </div>
             <div class="buttons">
+                <!--Корректировка
+                    TO-DO: Добавить обработку для кнопки процента. 
+                -->
                 <button onclick="pressTo('C')" id="ultra">C</button>
                 <button onclick="pressTo('(')" id="special">(</button>
                 <button onclick="pressTo(')')" id="special">)</button>
@@ -60,13 +78,17 @@
     </main>
     <footer>
         <div class="left-part">
+            <!--Корректировка
+                TO-DO: Добавить автоматическое определение текущего года.
+            -->
             <p>&copy 2025<br>Разработано Ефремовой Полиной Александровной</p>
+            <!--Корректировка
+                TO-DO: Для ссылочных элементов добавить анимацию при наведении (спуск линии, смена цвета).
+            -->
             <p>Возникли вопросы? <a href="mailto:efr-polina2004@yandex.ru">Напишите мне</a></p>
         </div>
         <div class="right-part">
-            <h3>Другие работы</h3>
-            <a href=""></a> <!-- Вставить ссылку на клиентскую часть Git Pages -->
-            <a href=""></a> <!-- Вставить ссылку на серверную часть -->
+            <h3><a href="https://kikuonka.github.io/coursework/">Другие работы</a></h3>
         </div>
     </footer>
 </body>
