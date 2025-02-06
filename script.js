@@ -5,8 +5,6 @@
 
 "use strict";
 
-let temp = "";
-
 function math(oper) {
     /*
         Я НЕНАВИЖУ РЕГУЛЯРНЫЕ ВЫРАЖЕНИЯ
@@ -67,4 +65,22 @@ function math(oper) {
     }
 
     return stack[0];
+}
+
+/*
+    TO-DO: Реализация функционала для расчета результата.
+    Требования: ---
+*/
+
+let temp = "";
+
+function calculate() {
+    try {
+        let result = math(temp);
+        document.getElementById("display").innerText = result;
+        temp = result.toString();
+    } catch {
+        document.getElementById("display").innerText = "Ошибка";
+        temp = "";
+    }
 }
