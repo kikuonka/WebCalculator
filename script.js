@@ -1,45 +1,53 @@
-/*
-    TO-DO: Реализация функции для выполнения математических операций (+ степени).
-    Требования: Использование системы стека/очереди для обработки операторов и операндов с учетом их приоритета.
-*/
-
 "use strict";
 
+/*
+    реализация функции, которая выполняет математиматические операции калькулятора
+*/
 function math(oper) {
-    let tokens = oper.match(/(\d+\.\d+|\d+|[-+*/^()])/g);
+    let tokens = oper.match(/(\d+\.\d+|\d+|[-+*/^()])/g);   //здесь просиходит обработка входящей строки
+                                                            //разбиение на токены
     if (!tokens) return "Ошибка";
 
-    let OPNQueue = [];
-    let operators = [];
-    let priority = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3};
+    let OPNQueue = [];  //это очередь
+                        //но я бы сказала, это реализация Обратной Польской Нотации для операндов
+    let operators = []; //это операторы
+    let priority = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3};    //это расставленный приоритет
 
+    //далее идет цикл обработки токенов
     for (let i = 0; i < tokens.length; i++) {
         let token = tokens[i];
+        //проверка на число
         if (!isNaN(token)) {
             OPNQueue.push(parseFloat(token));
+        //проверка на оператора
         } else if (token in priority) {
+            //распределение операторов по их приоритету
             while (operators.length && priority[operators[operators.length - 1]] >= priority[token]) {
                 OPNQueue.push(operators.pop());
             }
             operators.push(token);
+        //проверка на открывающуюся скобку
         } else if (token === '(') {
             operators.push(token);
+        //проверка на закрывающуюся скобку
         } else if (token === ')') {
             while (operators.length && operators[operators.length - 1] !== '(') {
                 OPNQueue.push(operators.pop());
             }
-            if (operators.length === 0) return "Ошибка"; // Если не нашли '(', то скобки некорректны
+            if (operators.length === 0) return "Ошибка";
             operators.pop();
         }
     }
 
-    if (operators.includes('(')) return "Ошибка"; // Если остались '(' в стеке — ошибка
+    if (operators.includes('(')) return "Ошибка";
 
     while (operators.length) {
         OPNQueue.push(operators.pop());
     }
 
     let stack = [];
+    //работа со стеком
+    //выполнение математических операций
     for (let token of OPNQueue) {
         if (!isNaN(token)) {
             stack.push(token);
@@ -58,86 +66,70 @@ function math(oper) {
             }
         }
     }
-
     return stack.length ? stack[0] : "Ошибка";
 }
 
-
 /*
-    TO-DO:      Реализация функционала для расчета результата.
-    Требования: Внедрение возможности сохранения последних введенных данных в localstorage,
-                чтобы после обновления страницы сохранялось введенные пользователем значения,
-                которые еще не были вычислены.
+    функция сохранения состояния дисплея (введенные значения)
+    и их загрузка при обновлении
 */
-
 let temp = localStorage.getItem("calculate_element") || "";
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("display").innerText = temp || "0";
 })
-
 function saveLocalStorage() {
     if (temp !== "Ошибка") {
         localStorage.setItem("calculate_element", temp);
     }
 }
 
-
+/*
+    основная логика вычисления с обработкой возможных ошибок
+*/
 function calculate() {
     if (temp === "" || !/[\d)]$/.test(temp)) {
-        document.getElementById("display").innerText = "Ошибка";
-        temp = "";
-        localStorage.removeItem("calculate_element");
+        failCatch();
         return;
     }
-
     try {
         let result = math(temp);
         if (result === "Ошибка") {
-            document.getElementById("display").innerText = "Ошибка";
-            temp = "";
-            localStorage.removeItem("calculate_element");
+            failCatch();
         } else {
             document.getElementById("display").innerText = result;
             temp = result.toString();
             saveLocalStorage();
         }
     } catch {
-        document.getElementById("display").innerText = "Ошибка";
-        temp = "";
-        localStorage.removeItem("calculate_element");
+        failCatch()
     }
 }
+function failCatch() {
+    document.getElementById("display").innerText = "Ошибка";
+    temp = "";
+    localStorage.removeItem("calculate_element");
+}
 
-
-/*
-    TO-DO:      Реализация возможности полностью очистить все введенные данные.
-    Требования: ---
+/* 
+    функции полной очистки дисплея 
+    и удаления последнего введенного значения
 */
-
 function clearAll() {
     temp = "";
     document.getElementById("display").innerText = "0";
     localStorage.removeItem("calculate_element");
 }
-
-/*
-    TO-DO:      Реализация удаления последних введенных операторов и операндов.
-    Требования: ---
-*/
-
 function clearOne() {
     if (temp.length === 0) return;
-
     temp = temp.slice(0, -1);
     document.getElementById("display").innerText = temp || 0;
     saveLocalStorage();
 }
 
 /*
-    ВАЖНО! Калькулятор не работал, потому что функция была названа click()
-    В JS и без этого хватает встроенных событий с таким наименованием
+    функция обработки нажатых кнопок
+    и проверка вводимых значений
 */
-
 function pressTo(button) {
     if (button === 'C') {
         clearAll();
@@ -157,7 +149,8 @@ function pressTo(button) {
         if (temp === "" || isNaN(parseFloat(temp))) {
             return;
         }
-        let match = temp.match(/-?\d+\.?\d*$/); // Найти последнее число
+
+        let match = temp.match(/-?\d+\.?\d*$/);
         if (match) {
             let number = parseFloat(match[0]);
             let inverted = (-number).toString();
@@ -168,7 +161,7 @@ function pressTo(button) {
     } else if (button === '=') {
         calculate();
     } else {
-        if (/[-+*/]$/.test(temp) && /[-+*/]/.test(button)) return; // Не даём ввести два оператора подряд
+        if (/[-+*/]$/.test(temp) && /[-+*/]/.test(button)) return;
         temp += button;
         document.getElementById("display").innerText = temp;
         saveLocalStorage();
@@ -176,27 +169,26 @@ function pressTo(button) {
     }
 }
 
-let initialTextLength = 0; // Фиксируем длину текста при его выходе за рамки
-let isTextOverflowing = false; // Флаг, который отслеживает, выходит ли текст за пределы
+
+/*
+    функция для адаптации размера текста к его длине
+*/
+let initialTextLength = 0;
+let isTextOverflowing = false;
 
 function adjustFontSize() {
     const display = document.getElementById("display");
     const parent = display.parentElement;
+    const baseFontSize = 2;
+    const minFontSize = 1.5; 
+    const currentTextLength = display.innerText.length;
 
-    const baseFontSize = 2; // Базовый размер шрифта
-    const minFontSize = 1.5; // Минимальный размер шрифта
-
-    const currentTextLength = display.innerText.length; // Длина текущего текста
-
-    // Проверка, выходит ли текст за пределы дисплея
     if (display.scrollWidth > parent.clientWidth && !isTextOverflowing) {
-        // Если текст выходит за рамки, фиксируем его длину и начинаем уменьшать размер шрифта
         initialTextLength = currentTextLength;
         isTextOverflowing = true;
         display.style.fontSize = minFontSize + "em";
     } else if (isTextOverflowing && currentTextLength <= initialTextLength) {
-        // Когда длина текста снова становится меньше фиксированной, восстанавливаем размер шрифта
         display.style.fontSize = baseFontSize + "em";
-        isTextOverflowing = false; // Сбрасываем флаг
+        isTextOverflowing = false;
     }
 }

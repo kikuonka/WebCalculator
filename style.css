@@ -1,6 +1,5 @@
-/*  Основа
-    TO-DO: Создание оформления для основных элементов HTML.
-    Требования: Реализация позиционирования с помощью CSS Grid.
+/*
+    основное оформления макета
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
@@ -20,11 +19,6 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     color: #ffffff;
-    
-    /*  
-        P.S. Больше не стоит ничего использовать,
-        сетка перешла в main.
-    */
 }
 
 header {
@@ -58,12 +52,6 @@ header {
     font-size: 32px;
     color: #ffffff;
     transition: color 0.5s;
-
-    /*
-        P.S. Неоновое свечение отменяется,
-        значок ВК все ломает. 
-        !!! ОН В ПРИНЦИПЕ ВСЕ ЛОМАЕТ, ПОЧЕМУ ОНИ ВООБЩЕ ПЛАТНЫЕ - МНЕ НУЖЕН БЫЛ КРУГЛЫЙ
-    */
 }
 
 .nav a i::after {
@@ -71,7 +59,7 @@ header {
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 110%; /* Это было хорошо */
+    width: 110%;
     height: 0;
     background: #FBD45A;
     transition: height 0.5s ease-in-out;
@@ -97,13 +85,32 @@ main {
     place-items: center;
     text-align: center;
 
-    /* Неоновая сетка */
+    /* неоновая сетка */
     background: linear-gradient(#C74AC4, transparent 1px), linear-gradient(90deg, #C74AC4, transparent 1px);
     background-size: 125px 125px;
     background-position: center center;
 }
 
+h1 {
+    padding: 30px;
+    font-size: 32px;
+
+    /* бегущая строка */
 /* 
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+*/
+}
+
+/*
+h1 span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll 5s infinite linear;
+} 
+
 @keyframes scroll {
     0% {
         transform: translate(0, 0);
@@ -111,30 +118,6 @@ main {
     100% {
         transform: translate(-100%, 0);
     }
-} 
-*/
-
-h1 {
-    padding: 30px;
-    font-size: 32px;
-    /* display: block;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden; */
-
-    /* 
-        P.S. Опытным путем было установлено,
-        что бегущая строка это ужасная идея,
-        мои глаза вытекли из глазниц спустя несколько секунд.
-        !НЕОН-ТРЕШ-БЛЕЙД-РАНИНГ ОТМЕНЯЕТСЯ
-    */
-}
-
-/* 
-h1 span {
-    display: inline-block;
-    padding-left: 100%;
-    animation: scroll 5s infinite linear;
 } 
 */
 
@@ -151,7 +134,8 @@ h1 span {
     gap: 20px;
     margin-bottom: 30px;
 
-    /* Адаптация */
+    /* адаптация */
+
     height: 60vh;
     width: 60vw;
     max-height: 450px;
@@ -173,7 +157,8 @@ h1 span {
     text-align: right;
     align-items: right;
 
-    /* Адаптация */
+    /* адаптация */
+
     max-width: 450px;
 }
 
@@ -204,7 +189,8 @@ h1 span {
     text-align: center;
     transition: background-color 0.5s ease, transform 0.5s ease;
 
-    /* Адаптация */
+    /* адаптация */
+
     max-height: 40px;
     max-width: 105px;
 }
