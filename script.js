@@ -176,13 +176,27 @@ function pressTo(button) {
     }
 }
 
+let initialTextLength = 0; // Фиксируем длину текста при его выходе за рамки
+let isTextOverflowing = false; // Флаг, который отслеживает, выходит ли текст за пределы
+
 function adjustFontSize() {
     const display = document.getElementById("display");
-    let parentWidth = display.parentElement.clientWidth; // Ширина дисплея
-    let fontSize = 2; // Стартовый размер шрифта (rem)
+    const parent = display.parentElement;
 
-    while (display.scrollWidth > parentWidth && fontSize > 1) {
-        fontSize -= 0.1; // Уменьшаем шрифт на 0.1 rem, если текст не умещается
-        display.style.fontSize = fontSize + "rem";
+    const baseFontSize = 2; // Базовый размер шрифта
+    const minFontSize = 1.5; // Минимальный размер шрифта
+
+    const currentTextLength = display.innerText.length; // Длина текущего текста
+
+    // Проверка, выходит ли текст за пределы дисплея
+    if (display.scrollWidth > parent.clientWidth && !isTextOverflowing) {
+        // Если текст выходит за рамки, фиксируем его длину и начинаем уменьшать размер шрифта
+        initialTextLength = currentTextLength;
+        isTextOverflowing = true;
+        display.style.fontSize = minFontSize + "em";
+    } else if (isTextOverflowing && currentTextLength <= initialTextLength) {
+        // Когда длина текста снова становится меньше фиксированной, восстанавливаем размер шрифта
+        display.style.fontSize = baseFontSize + "em";
+        isTextOverflowing = false; // Сбрасываем флаг
     }
 }

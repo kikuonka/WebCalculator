@@ -169,8 +169,9 @@ h1 span {
     border-radius: 10px;
     box-shadow: 10px 0 0 rgb(255, 255, 255);
     padding: 10px;
-    text-align: right;
     overflow: hidden;
+    text-align: right;
+    align-items: right;
 
     /* Адаптация */
     max-width: 450px;
@@ -178,12 +179,12 @@ h1 span {
 
 #display {
     font-size: 2em;
-    align-items: center;
-    white-space: nowrap;
+    white-space: wrap;
     overflow: hidden;
-    text-overflow: ellipsis;
     max-width: 100%;
     transition: font-size 0.2s ease;
+    direction: rtl;
+    unicode-bidi: plaintext;
 }
 
 .buttons {
