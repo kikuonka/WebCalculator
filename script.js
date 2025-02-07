@@ -6,20 +6,7 @@
 "use strict";
 
 function math(oper) {
-    /*
-        Я НЕНАВИЖУ РЕГУЛЯРНЫЕ ВЫРАЖЕНИЯ
-        ОНИ ИСПОРТИЛИ МНЕ ВЕЧЕР
-        __________________________________________
-        Словарик:
-        \d+ - несколько цифр от 0 до 9
-        \.? - допускается одна точка точка
-        \d* - допускаются несколько цифр от 0 до 9
-        ИЛИ
-        [] - перечисление допустимых операторов
-        __________________________________________
-    */
-    let tokens = oper.match(/(\d+\.?\d*|[-+*/^()])|(-?\d+\.?\d*)/g); 
-    /* Скобки все. Не понимаю почему не работают скобки. */
+    let tokens = oper.match(/(\d+\.\d+|\d+|[-+*/^()])/g);
     if (!tokens) return "Ошибка";
 
     let OPNQueue = [];
@@ -31,9 +18,6 @@ function math(oper) {
         if (!isNaN(token)) {
             OPNQueue.push(parseFloat(token));
         } else if (token in priority) {
-            if (token === '-' && (i === 0 || tokens[i - 1] === '(')) {
-                OPNQueue.push(0);
-            }
             while (operators.length && priority[operators[operators.length - 1]] >= priority[token]) {
                 OPNQueue.push(operators.pop());
             }
@@ -44,9 +28,12 @@ function math(oper) {
             while (operators.length && operators[operators.length - 1] !== '(') {
                 OPNQueue.push(operators.pop());
             }
+            if (operators.length === 0) return "Ошибка"; // Если не нашли '(', то скобки некорректны
             operators.pop();
         }
     }
+
+    if (operators.includes('(')) return "Ошибка"; // Если остались '(' в стеке — ошибка
 
     while (operators.length) {
         OPNQueue.push(operators.pop());
@@ -65,9 +52,7 @@ function math(oper) {
                 case '-': stack.push(num1 - num2); break;
                 case '*': stack.push(num1 * num2); break;
                 case '/': 
-                    if (num2 === 0) {
-                        return "Ошибка";
-                    }
+                    if (num2 === 0) return "Ошибка";
                     stack.push(num1 / num2); break;
                 case '^': stack.push(Math.pow(num1, num2)); break;
             }
@@ -76,6 +61,7 @@ function math(oper) {
 
     return stack.length ? stack[0] : "Ошибка";
 }
+
 
 /*
     TO-DO:      Реализация функционала для расчета результата.
@@ -90,17 +76,20 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 function saveLocalStorage() {
-    localStorage.setItem("calculate_element", temp);
+    if (temp !== "Ошибка") {
+        localStorage.setItem("calculate_element", temp);
+    }
 }
 
+
 function calculate() {
-    if (temp === "" || isNaN(parseFloat(temp))) {
+    if (temp === "" || !/[\d)]$/.test(temp)) {
         document.getElementById("display").innerText = "Ошибка";
         temp = "";
         localStorage.removeItem("calculate_element");
         return;
     }
-    
+
     try {
         let result = math(temp);
         if (result === "Ошибка") {
@@ -118,6 +107,7 @@ function calculate() {
         localStorage.removeItem("calculate_element");
     }
 }
+
 
 /*
     TO-DO:      Реализация возможности полностью очистить все введенные данные.
@@ -178,8 +168,21 @@ function pressTo(button) {
     } else if (button === '=') {
         calculate();
     } else {
+        if (/[-+*/]$/.test(temp) && /[-+*/]/.test(button)) return; // Не даём ввести два оператора подряд
         temp += button;
         document.getElementById("display").innerText = temp;
         saveLocalStorage();
+        adjustFontSize();
+    }
+}
+
+function adjustFontSize() {
+    const display = document.getElementById("display");
+    let parentWidth = display.parentElement.clientWidth; // Ширина дисплея
+    let fontSize = 2; // Стартовый размер шрифта (rem)
+
+    while (display.scrollWidth > parentWidth && fontSize > 1) {
+        fontSize -= 0.1; // Уменьшаем шрифт на 0.1 rem, если текст не умещается
+        display.style.fontSize = fontSize + "rem";
     }
 }
